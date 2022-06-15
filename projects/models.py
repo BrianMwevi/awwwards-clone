@@ -73,3 +73,13 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def save_label(cls, instance):
+        try:
+            label = Label.objects.get(name=instance.name)
+            return label
+
+        except instance.DoesNotExist:
+            instance.save()
+            return instance
