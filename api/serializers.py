@@ -63,5 +63,40 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
+class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='projects-detail')
+    user = user = serializers.SerializerMethodField()
+    ratings = RatingSerializer(many=True, read_only=True, required=False)
+    labels = LabelSerializer(many=True, read_only=True, required=False)
+    posted_at = serializers.SerializerMethodField()
 
+    class Meta:
+        model = Project
+        fields = [
+            'id',
+            'name',
+            'description',
+            'average_rating',
+            'ratings',
+            'design',
+            'creativity',
+            'usability',
+            'content',
+            'user',
+            'labels',
+            'image',
+            'posted_at',
+            'url',
+        ]
+
+    def get_user(self, obj):
+        return {
+            'id': obj.user.id,
+            'username': obj.user.username,
+            'image': obj.user.profile.image.url
+        }
+
+    def get_posted_at(self, obj):
+        return obj.posted_at.strftime('%Y-%m-%d')
 
