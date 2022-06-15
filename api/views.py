@@ -66,3 +66,11 @@ class LabelViewset(viewsets.ModelViewSet):
         serializer.save(project=project)
 
 
+class RatingViewset(viewsets.ModelViewSet):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
