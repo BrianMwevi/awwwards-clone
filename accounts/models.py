@@ -20,7 +20,12 @@ class Profile(models.Model):
             Profile.objects.create(user=instance)
         instance.profile.save()
 
-  
-           
+    @receiver(post_save, sender=Project)
+    def update_projects(sender, instance, created, **kwargs):
+        if created:
+            profile = Profile.objects.get(user__id=instance.user.id)
+            profile.projects.add(instance)
+            profile.save()
+
     def __str__(self):
         return self.user.username
