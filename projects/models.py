@@ -28,3 +28,20 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user')
+    design = models.PositiveIntegerField(default=0)
+    usability = models.PositiveIntegerField(default=0)
+    creativity = models.PositiveIntegerField(default=0)
+    content = models.PositiveIntegerField(default=0)
+    rating = models.FloatField(default=0, blank=True)
+    project = models.ForeignKey(
+        Project, on_delete=models.SET_NULL, null=True)
+    posted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.rating}"
