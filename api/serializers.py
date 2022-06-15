@@ -21,3 +21,33 @@ class UserSerializer(serializers.ModelSerializer):
         # Token.objects.create(user=user)
         return user
 
+
+class RatingSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='ratings-detail')
+    project = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all())
+    user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Rating
+        fields = [
+            'project',
+            'rating',
+            'id',
+            'user',
+            'design',
+            'usability',
+            'creativity',
+            'content',
+            'posted_at',
+            'url',
+        ]
+
+    def get_user(self, obj):
+        return {
+            'id': obj.user.id,
+            'username': obj.user.username,
+            'image': obj.user.profile.image.url
+        }
+
