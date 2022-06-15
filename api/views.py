@@ -54,3 +54,15 @@ class UserCreate(generics.CreateAPIView):
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             # "token": AuthToken.objects.create(user)[1]
         })
+
+
+class LabelViewset(viewsets.ModelViewSet):
+    queryset = Label.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = LabelSerializer
+
+    def perform_create(self, serializer):
+        project = Project.objects.get(pk=self.kwargs['project'])
+        serializer.save(project=project)
+
+
