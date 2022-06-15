@@ -2,8 +2,8 @@
 
 ### Description
 
-A basic Awwwards website API that includes user authentication system, posting of projects, rating, and performing CRUD operations on their projects. The application front-end is built with Angular
-Live API: https://awwwards-cloned.herokuapp.com/api/
+A basic Awwwards website API that includes user authentication system, posting of projects, rating, and performing CRUD operations on their projects. The application front-end is built with Angular <br>
+Live API: https://awwwards-cloned.herokuapp.com/api/ <br>
 Live Frontend: https://brianmwevi.github.io/awwwards-cloned/
 
 ### Technologies Used
