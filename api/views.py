@@ -74,3 +74,28 @@ class RatingViewset(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
+class ProjectViewset(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Project.objects.all()
+        search = self.request.GET.get('q')
+
+        if search:
+            return queryset.filter(Q(name__icontains=search) | Q(user__username__icontains=search))
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def destroy(self, request, pk=None):
+        project = self.get_object()
+
+        user = request.user
+        if project.user == user:
+            project.delete()
+            return Response(data='delete success')
+        return Response(data='permission denied')
