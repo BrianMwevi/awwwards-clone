@@ -45,3 +45,20 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"{self.rating}"
+
+
+@receiver(post_save, sender=Rating)
+def update_rating(sender, instance, created, **kwargs):
+    if created:
+        rating = (instance.design + instance.usability +
+                  instance.creativity + instance.content)/4
+        instance.rating = + rating
+        project = Project.objects.get(id=instance.project.id)
+        project.average_rating += rating
+        project.content += instance.content
+        project.design += instance.design
+        project.usability += instance.usability
+        project.creativity += instance.creativity
+        project.ratings.add(instance)
+        project.save()
+        instance.save()
