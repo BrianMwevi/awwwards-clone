@@ -27,3 +27,16 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
+
+
+class ProfileViewset(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+    def get(self, request, *args, **kwargs):
+        user = Profile.objects.get(user=request.user)
+        data = ProfileSerializer(user, context={'request': request}).data
+
+        return Response(data, status=status.HTTP_200_OK)
+    # TODO: Add permission to only request own's profile
+
