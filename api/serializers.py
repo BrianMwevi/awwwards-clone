@@ -51,3 +51,17 @@ class RatingSerializer(serializers.HyperlinkedModelSerializer):
             'image': obj.user.profile.image.url
         }
 
+
+class LabelSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Label
+        fields = [
+            'id',
+            'name',
+            'created_at'
+        ]
+
+
+
+
