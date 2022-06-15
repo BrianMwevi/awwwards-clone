@@ -100,3 +100,11 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def get_posted_at(self, obj):
         return obj.posted_at.strftime('%Y-%m-%d')
 
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    projects = ProjectSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('user', 'bio', 'projects', 'is_jury', 'image',)
